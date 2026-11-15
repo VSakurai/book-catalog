@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Книги — BookCatalog{% endblock %} {% block content %}
+<h1>Каталог книг</h1>
+
+<form method="get" action="/" class="search-form">
+	<input type="text" name="q" placeholder="Назва або автор" value="{{ q }}" />
+	<input type="text" name="genre" placeholder="Жанр" value="{{ genre }}" />
+	<button type="submit">Пошук</button>
+</form>
+
+<details>
+	<summary>Додати книгу</summary>
+	<form method="post" action="/books" class="stack">
+		<input name="title" placeholder="Назва" required />
+		<input name="author" placeholder="Автор" required />
+		<input name="year" type="number" placeholder="Рік" />
+		<input name="genre" placeholder="Жанр" />
+		<textarea name="description" placeholder="Опис"></textarea>
+		<button type="submit">Зберегти</button>
+	</form>
+</details>
+
+<ul class="book-list">
+	{% for book in books %}
+	<li>
+		<a href="/books/{{ book.id }}">{{ book.title }}</a> — {{ book.author }} {% if book.year %}({{ book.year
+		}}){% endif %} {% if book.genre %}<span class="genre">{{ book.genre }}</span>{% endif %}
+		<span class="rating">
+			{% if book.average_rating %}★ {{ book.average_rating }}{% else %}без оцінок{% endif %}
+		</span>
+	</li>
+	{% else %}
+	<li>Книг поки немає.</li>
+	{% endfor %}
+</ul>
+{% endblock %}

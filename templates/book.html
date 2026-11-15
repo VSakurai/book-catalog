@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}{{ book.title }} — BookCatalog{% endblock %} {% block content %}
+<a href="/">← Назад</a>
+<h1>{{ book.title }}</h1>
+<p><strong>Автор:</strong> {{ book.author }}</p>
+{% if book.year %}
+<p><strong>Рік:</strong> {{ book.year }}</p>
+{% endif %} {% if book.genre %}
+<p><strong>Жанр:</strong> {{ book.genre }}</p>
+{% endif %} {% if book.description %}
+<p>{{ book.description }}</p>
+{% endif %}
+<p>
+	<strong>Середній рейтинг:</strong>
+	{% if book.average_rating %}★ {{ book.average_rating }}{% else %}немає{% endif %}
+</p>
+
+<h2>Відгуки</h2>
+<form method="post" action="/books/{{ book.id }}/reviews" class="stack">
+	<label>Оцінка (1–5): <input type="number" name="rating" min="1" max="5" required /></label>
+	<textarea name="text" placeholder="Текст відгуку"></textarea>
+	<button type="submit">Додати відгук</button>
+</form>
+
+<ul>
+	{% for r in reviews %}
+	<li>★ {{ r.rating }} — {{ r.text or "(без тексту)" }}</li>
+	{% else %}
+	<li>Відгуків ще немає.</li>
+	{% endfor %}
+</ul>
+
+<form method="post" action="/books/{{ book.id }}/delete" onsubmit="return confirm('Видалити книгу?')">
+	<button type="submit" class="danger">Видалити книгу</button>
+</form>
+{% endblock %}

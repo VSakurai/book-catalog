@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %}Статистика — BookCatalog{% endblock %} {% block content %}
+<h1>Статистика</h1>
+<ul>
+	<li>Книг: {{ stats.total_books }}</li>
+	<li>Відгуків: {{ stats.total_reviews }}</li>
+	<li>Середній рейтинг: {{ stats.average_rating or "—" }}</li>
+</ul>
+<h2>Топ жанрів</h2>
+<ul>
+	{% for g in stats.top_genres %}
+	<li>{{ g.genre }} — {{ g.count }}</li>
+	{% else %}
+	<li>Жанри не вказані.</li>
+	{% endfor %}
+</ul>
+{% endblock %}
